@@ -11,18 +11,19 @@ on:
 
 jobs:
   build:
+  
     runs-on: ubuntu-latest
-    steps:
 
+    steps:
       - name: Check environment
         run: |
           whoami
           echo $(nproc)
 
-      - name: apt removepackage
+      - name: Remove unused packages and other cleanup
         run: sudo apt -y purge --auto-remove --purge php* mysql* mono* snapd* dotnet* aspnetcore* firefox* google*
   
-      - name: Install prerequisites packages
+      - name: Install packages
         run: |
           sudo apt -y update
           sudo apt -y full-upgrade --auto-remove --purge
@@ -30,7 +31,7 @@ jobs:
             python3-distutils rsync unzip zlib1g-dev file wget
           sudo apt -y clean
 
-      - name: Checkout this repository to configurations
+      - name: Checkout this repository
         uses: actions/checkout@v4
         with:
           path: config

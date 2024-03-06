@@ -17,5 +17,14 @@ jobs:
       - name: nproc
         run: echo $(nproc)
 
+      - name: df
+        run: df
+
       - name: apt installed
         run: sudo apt list --installed
+
+      - name: apt removepackage
+        run: sudo apt -y purge --auto-remove --purge php* mysql* mono* python3*
+      
+      - name: df
+        run: df

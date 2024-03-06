@@ -56,13 +56,14 @@ jobs:
         run: time make -j$(nproc) V=c
 
       - name: Make release
+        working-directory: openwrt
         run: |
           set -xe
           shopt -s nullglob
           RELDATE="$(date +'%Y-%m-%d %H:%M')"
           NAME="Auto-Build $RELDATE"
           TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
-          gh release create "$TAGNAME" --target "main" --title "$NAME" openwrt/bin/targets/ath79/generic/*.{bin,buildinfo,manifest,json} openwrt/bin/targets/ath79/generic/sha256sums
+          gh release create "$TAGNAME" --target "main" --title "$NAME" bin/targets/ath79/generic/*.{bin,buildinfo,manifest,json} openwrt/bin/targets/ath79/generic/sha256sums
           echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
           echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
         env:

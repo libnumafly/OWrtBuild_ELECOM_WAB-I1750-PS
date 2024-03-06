@@ -11,8 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Check environment
-        run: |
-          whoami
-          echo $(nproc)
-          sudo apt list --installed 
+      - name: whoami
+        run: whoami
+
+      - name: nproc
+        run: echo $(nproc)
+
+      - name: apt installed
+        run: sudo apt list --installed

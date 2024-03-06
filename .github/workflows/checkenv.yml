@@ -17,8 +17,8 @@ jobs:
       - name: nproc
         run: echo $(nproc)
 
-      - name: du
-        run: du /
+      #- name: du
+      #  run: du /
 
       - name: df
         run: df -h

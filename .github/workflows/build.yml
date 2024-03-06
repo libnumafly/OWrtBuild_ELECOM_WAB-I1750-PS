@@ -21,8 +21,20 @@ jobs:
           echo $(nproc)
 
       - name: Remove unused packages and other cleanup
-        run: sudo apt -y purge --auto-remove --purge php* mysql* mono* snapd* dotnet* aspnetcore* firefox* google*
-  
+        run: |
+          sudo apt -y purge --auto-remove --purge php* mysql* mono* snapd* dotnet* aspnetcore* firefox* google*
+          sudo apt -y autopurge
+          sudo apt -y autoclean
+          sudo apt -y clean
+          sudo rm -rf /usr/local/lib/android/sdk
+          sudo rm -rf /usr/local/share/chromedriver-linux64
+          sudo rm -rf /usr/local/share/edge_driver
+          sudo rm -rf /usr/local/share/gecko_driver
+          sudo rm -rf /usr/share/java
+          sudo rm -rf /usr/share/miniconda
+          sudo rm -rf /usr/local/share/vcpkg
+          df -h
+
       - name: Install packages
         run: |
           sudo apt -y update
@@ -56,7 +68,7 @@ jobs:
       - name: Do the build
         run: |
           cd openwrt
-          time make -j$(nproc)
+          time make -j$(nproc) V=s
 
       - name: Make release
         run: |

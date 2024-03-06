@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Check environment minimal
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-minimal
+    steps:
+
+      - name: whoami
+        run: whoami
+
+      - name: nproc
+        run: echo $(nproc)
+
+      #- name: du
+      #  run: du /
+
+      - name: df
+        run: df -h
+
+      - name: apt installed
+        run: sudo apt list --installed
+
+      - name: apt removepackage
+        run: |
+          sudo apt -y purge --auto-remove --purge php* mysql* mono* snapd* dotnet* aspnetcore* firefox* google*
+          sudo apt -y autopurge
+          sudo apt -y autoclean
+          sudo apt -y clean
+
+      - name: delete
+        run: |
+          sudo rm -rf /usr/local/lib/android/sdk
+          sudo rm -rf /usr/local/share/chromedriver-linux64
+          sudo rm -rf /usr/local/share/edge_driver
+          sudo rm -rf /usr/local/share/gecko_driver
+          sudo rm -rf /usr/share/java
+          sudo rm -rf /usr/share/miniconda
+          sudo rm -rf /usr/local/share/vcpkg
+      
+      - name: df
+        run: df -h

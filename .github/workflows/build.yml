@@ -47,7 +47,7 @@ jobs:
       - name: Do the build
         run: |
           cd openwrt
-          time make -j$(nproc) V=c
+          time make -j$(nproc) V=sc
 
       - name: Make release
         run: |

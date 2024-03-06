@@ -20,32 +20,49 @@ jobs:
           path: config
 
       - name: Clone OpenWrt repository
-        run: git clone --depth=2 https://github.com/openwrt/openwrt.git
+        run: |
+          pwd
+          git clone --depth=2 https://github.com/openwrt/openwrt.git
 
       - name: Change directory
-        run: cd openwrt
+        run: |
+          pwd
+          cd openwrt
+          pwd
 
       - name: Configure OpenWrt feeds repository
-        run: patch -Np1 < ../config/feeds.main.patch
+        run: |
+          pwd
+          patch -Np1 < ../config/feeds.main.patch
+          pwd
 
       - name: Clone OpenWrt feeds repository
         run: |
+          pwd
           git clone --depth=2 https://github.com/openwrt/packages.git feeds/packages 
           git clone --depth=2 https://github.com/openwrt/luci.git feeds/luci  
           git clone --depth=2 https://github.com/openwrt/routing.git feeds/routing
           git clone --depth=2 https://github.com/openwrt/telephony.git feeds/telephony
+          pwd
 
       - name: Installing feeds packages
         run: |
+          pwd
           ./scripts/feeds update -a
           ./scripts/feeds update -a
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           ./scripts/feeds install -a
           ./scripts/feeds install -a
+          pwd
       
       - name: Including build configuration
-        run: cp ../config/.config .
+        run: |
+          pwd
+          cp ../config/.config .
+          pwd
 
       - name: Run the builder
-        run: time make -j3
+        run: |
+          pwd
+          time make -j3

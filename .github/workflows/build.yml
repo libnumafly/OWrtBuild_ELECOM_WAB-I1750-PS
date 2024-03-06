@@ -39,4 +39,5 @@ jobs:
       - name: Do the build
         run: |
           cd openwrt
-          time make -j3
+          time make -j$(nproc)
+          

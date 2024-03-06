@@ -27,7 +27,7 @@ jobs:
         run: sudo apt list --installed
 
       - name: apt removepackage
-        run: sudo apt -y purge --auto-remove --purge php* mysql* mono* python3* snapd dotnet* aspnetcore* 
+        run: sudo apt -y purge --auto-remove --purge php* mysql* mono* python3* snapd* dotnet* aspnetcore* firefox* google*
       
       - name: df
         run: df -h

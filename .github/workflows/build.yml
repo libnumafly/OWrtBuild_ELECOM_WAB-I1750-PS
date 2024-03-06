@@ -14,18 +14,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v3
-
-      - name: Clone OpenWrt repository
+      - name: Checkout configurations
+        uses: actions/checkout@v4
         with:
-          repository: openwrt/openwrt
-          path: openwrt-main
+          path: config
 
       - name: Clone OpenWrt repository
-        run: echo Hello, world!
+        run: git clone --depth=2 https://github.com/openwrt/openwrt.git
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Change directory
+        run: cd openwrt
+
+      - name: Configure OpenWrt feeds repository
+        run: patch -Np1 < ../config/feeds.main.patch
+
+      - name: Clone OpenWrt feeds repository
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          git clone --depth=2 https://github.com/openwrt/packages.git feeds/packages 
+          git clone --depth=2 https://github.com/openwrt/luci.git feeds/luci  
+          git clone --depth=2 https://github.com/openwrt/routing.git feeds/routing
+          git clone --depth=2 https://github.com/openwrt/telephony.git feeds/telephony
+
+      - name: Installing feeds packages
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds update -a
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+          ./scripts/feeds install -a
+          ./scripts/feeds install -a
+      
+      - name: Including build configuration
+        run: cp ../config/.config .
+
+      - name: Run the builder
+        run: time make -j3

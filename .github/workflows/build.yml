@@ -17,6 +17,7 @@ jobs:
       - name: Check environment
         run: |
           whoami
+          echo $(nproc)
 
       - name: Install prerequisites packages
         run: |
@@ -57,7 +58,7 @@ jobs:
           RELDATE="$(date +'%Y-%m-%d %H:%M')"
           NAME="Auto-Build $RELDATE"
           TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
-          gh release create "$TAGNAME" --target "master" --title "$NAME" artifacts/*.{zip,tar.xz}
+          gh release create "$TAGNAME" --target "main" --title "$NAME" openwrt/bin/targets/ath79/generic/*.{bin,buildinfo,manifest,json} openwrt/bin/targets/ath79/generic/sha256sums
           echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
           echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
         env:

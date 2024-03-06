@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: Install packages
         run: |
-          sudo apt -y purge 
-          sudo apt -y update --auto-remove --purge snapd* firefox*
+          sudo apt -y purge --auto-remove --purge snapd* firefox*
+          sudo apt -y update
           sudo apt -y full-upgrade --auto-remove --purge
           sudo apt -y install --auto-remove --purge build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev \
             python3-distutils rsync unzip zlib1g-dev file wget

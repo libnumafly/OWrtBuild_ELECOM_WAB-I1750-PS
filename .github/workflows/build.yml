@@ -43,11 +43,16 @@ jobs:
           ./scripts/feeds install -a
           ./scripts/feeds install -a
           cp ../config/.config .
+          make defconfig
 
+      - name: Pre-download sources
+        run: |
+          cd openwrt
+          time make download
       - name: Do the build
         run: |
           cd openwrt
-          time make -j$(nproc) V=sc
+          time make -j$(nproc) V=c
 
       - name: Make release
         run: |

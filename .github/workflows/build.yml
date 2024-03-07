@@ -66,6 +66,9 @@ jobs:
         working-directory: openwrt
         run: |
           patch -Np1 < ../feeds.github.patch
+          ./scripts/feeds update -a
+          ./scripts/feeds update -a
+          ./scripts/feeds update -a
           ./scripts/feeds install -a
           ./scripts/feeds install -a
           ./scripts/feeds install -a

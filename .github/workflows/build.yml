@@ -83,15 +83,20 @@ jobs:
         working-directory: openwrt
         run: time make -j$(nproc) V=c
 
+      - name: Moving artifacts
+        run: |
+          mkdir -pv artifacts
+          mv openwrt/bin/targets/ artifacts
+
       - name: Make release
-        working-directory: openwrt
+        #working-directory: openwrt
         run: |
           set -xe
           shopt -s nullglob
           RELDATE="$(date +'%Y-%m-%d %H:%M')"
           NAME="Auto-Build $RELDATE"
           TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
-          gh release create "$TAGNAME" --title "$NAME" bin/targets/ath79/generic/*.{bin,buildinfo,manifest,json} bin/targets/ath79/generic/sha256sums
+          gh release create "$TAGNAME" --target "main" --title "$NAME" artifacts/*
           echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
           echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
         env:

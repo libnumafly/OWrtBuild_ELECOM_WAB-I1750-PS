@@ -62,6 +62,10 @@ jobs:
           path: openwrt/feeds/telephony
           fetch-depth: 1
 
+      - name: Applying customisation
+        working-directory: openwrt
+        run: patch -Np1 < ../feeds.github.patch
+
       - name: Setup to build
         working-directory: openwrt
         run: |

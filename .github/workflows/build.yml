@@ -77,11 +77,11 @@ jobs:
 
       - name: Pre-download sources
         working-directory: openwrt
-        run: time make -j4 download
+        run: time make -j8 download
 
       - name: Do the build
         working-directory: openwrt
-        run: time make -j8 V=c
+        run: time make -j4 V=c
 
       - name: Moving artifacts
         run: |

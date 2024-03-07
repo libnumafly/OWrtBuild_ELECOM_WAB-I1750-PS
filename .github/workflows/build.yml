@@ -81,11 +81,6 @@ jobs:
         working-directory: openwrt
         run: time make -j$(nproc)
 
-      - name: Moving artifacts
-        run: |
-          mkdir -pv artifacts
-          cp -r openwrt/bin/targets/ artifacts
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:

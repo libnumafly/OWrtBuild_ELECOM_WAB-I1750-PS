@@ -77,7 +77,7 @@ jobs:
 
       - name: Pre-download sources
         working-directory: openwrt
-        run: time make -j download
+        run: time make -j4 download
 
       - name: Do the build
         working-directory: openwrt

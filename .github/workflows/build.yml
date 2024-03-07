@@ -69,6 +69,8 @@ jobs:
         working-directory: openwrt
         run: |
           ./scripts/feeds update -a
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
           ./scripts/feeds install -a
           cp ../target_config/ath79_generic_DEVICE_elecom_wab-i1750-ps.config .config
           make defconfig
@@ -84,7 +86,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-            path: openwrt/bin/targets
+            path: openwrt/bin
 
   packing:
     needs: build
@@ -103,7 +105,7 @@ jobs:
           RELDATE="$(date +'%Y-%m-%d %H:%M')"
           NAME="Auto-Build $RELDATE"
           TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
-          gh release create "$TAGNAME" --repo ${{ github.repository }} --target "main" --title "$NAME" artifacts/*
+          gh release create "$TAGNAME" --repo ${{ github.repository }} --target "main" --title "$NAME" artifact/targets/ath79/generic/*.{bin,buildinfo,json,manifest} artifact/targets/ath79/generic/sha256sums
           echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
           echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
         env:

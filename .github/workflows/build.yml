@@ -86,7 +86,7 @@ jobs:
       - name: Moving artifacts
         run: |
           mkdir -pv artifacts
-          cp openwrt/bin/targets/ artifacts
+          cp -r openwrt/bin/targets/ artifacts
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

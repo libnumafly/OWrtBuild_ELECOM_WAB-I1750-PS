@@ -77,16 +77,21 @@ jobs:
 
       - name: Pre-download sources
         working-directory: openwrt
-        run: time make download
+        run: time make -j download
 
       - name: Do the build
         working-directory: openwrt
-        run: time make -j$(nproc) V=c
+        run: time make -j8 V=c
 
       - name: Moving artifacts
         run: |
           mkdir -pv artifacts
-          mv openwrt/bin/targets/ artifacts
+          cp openwrt/bin/targets/ artifacts
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+            path: openwrt/bin/targets
 
       - name: Make release
         #working-directory: openwrt
@@ -101,3 +106,11 @@ jobs:
           echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
+  packing:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4

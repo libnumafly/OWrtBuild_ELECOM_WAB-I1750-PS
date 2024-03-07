@@ -23,6 +23,9 @@ jobs:
       - name: df
         run: df -h
 
+      - name: docker prune
+        run: docker system prune --volumes --force
+
       - name: apt installed
         run: sudo apt list --installed
 

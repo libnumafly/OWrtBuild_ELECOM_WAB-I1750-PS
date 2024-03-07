@@ -66,9 +66,6 @@ jobs:
         working-directory: openwrt
         run: |
           patch -Np1 < ../feeds.github.patch
-          ./scripts/feeds update -a
-          ./scripts/feeds update -a
-          ./scripts/feeds update -a
           ./scripts/feeds install -a
           ./scripts/feeds install -a
           ./scripts/feeds install -a
@@ -81,7 +78,7 @@ jobs:
 
       - name: Do the build
         working-directory: openwrt
-        run: time make -j$(nproc) V=c
+        run: time make -j$(nproc)
 
       - name: Moving artifacts
         run: |
@@ -93,9 +90,18 @@ jobs:
         with:
             path: openwrt/bin/targets
 
+  packing:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
       - name: Make release
         #working-directory: openwrt
         run: |
+          ls -laFR
           set -xe
           shopt -s nullglob
           RELDATE="$(date +'%Y-%m-%d %H:%M')"
@@ -107,10 +113,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-  packing:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4

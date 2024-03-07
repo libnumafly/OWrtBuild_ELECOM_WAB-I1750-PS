@@ -27,35 +27,35 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Checkout OpenWrt repository
+      - name: Checkout openwrt/openwrt repository
         uses: actions/checkout@v4
         with: 
           repository: openwrt/openwrt
           path: openwrt
           fetch-depth: 1
 
-      - name: Checkout OpenWrt packages repository
+      - name: Checkout openwrt/packages repository
         uses: actions/checkout@v4
         with: 
           repository: openwrt/packages
           path: openwrt/feeds/packages
           fetch-depth: 1
 
-      - name: Checkout OpenWrt luci repository
+      - name: Checkout openwrt/luci repository
         uses: actions/checkout@v4
         with: 
           repository: openwrt/luci
           path: openwrt/feeds/luci
           fetch-depth: 1
 
-      - name: Checkout OpenWrt routing repository
+      - name: Checkout openwrt/routing repository
         uses: actions/checkout@v4
         with: 
           repository: openwrt/routing
           path: openwrt/feeds/routing
           fetch-depth: 1
 
-      - name: Checkout OpenWrt telephony repository
+      - name: Checkout openwrt/telephony repository
         uses: actions/checkout@v4
         with: 
           repository: openwrt/telephony
@@ -65,7 +65,7 @@ jobs:
       - name: Setup to build
         working-directory: openwrt
         run: |
-          patch -Np1 < ../feeds.main.patch
+          patch -Np1 < ../feeds.github.patch
           ./scripts/feeds update -a
           ./scripts/feeds update -a
           ./scripts/feeds update -a

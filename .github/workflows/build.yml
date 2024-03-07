@@ -71,10 +71,6 @@ jobs:
         run: |
           patch -Np1 < ../feeds.github.patch
           ./scripts/feeds update -a
-          ./scripts/feeds update -a
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
-          ./scripts/feeds install -a
           ./scripts/feeds install -a
           cp ../target_config/ath79_generic_DEVICE_elecom_wab-i1750-ps.config .config
           make defconfig

@@ -16,7 +16,7 @@ jobs:
       - name:
           Remove unused apt packages
         run:
-          sudo apt -y remove --auto-remove --purge aspnetcore* docker* dotnet* firefox* golang* google* mono* mysql* nginx* php* ruby* snapd*
+          sudo apt -y remove --auto-remove --purge firefox snapd
 
       - name:
           Install prerequisites apt packages

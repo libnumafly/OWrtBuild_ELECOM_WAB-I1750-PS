@@ -16,7 +16,7 @@ jobs:
       - name:
           Remove unused apt packages
         run:
-          sudo apt -y remove --auto-remove --purge firefox snapd
+          sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
 
       - name:
           Update apt statuses

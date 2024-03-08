@@ -131,6 +131,7 @@ jobs:
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-
           path:
             openwrt/staging_dir
+            openwrt/.ccache
 
       - name:
           Apply customisation
@@ -223,5 +224,6 @@ jobs:
         with:
           key:
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
-          path:
+          path: |
             openwrt/staging_dir
+            openwrt/.ccache

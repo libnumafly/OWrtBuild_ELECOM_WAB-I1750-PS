@@ -14,6 +14,18 @@ jobs:
 
     steps:
       - name:
+          Cache build base
+        uses:
+          actions/cache@v3
+        with:
+          key:
+            build.ath79.${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: |
+            build.ath79.
+          path: |
+            openwrt
+
+      - name:
           Remove unused apt packages
         run:
           sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
@@ -80,36 +92,63 @@ jobs:
 
       - name:
           Checkout openwrt/openwrt repository
-        run:
-          git clone --depth=1 https://github.com/openwrt/openwrt.git
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/openwrt
+          path:
+            openwrt
+          fetch-depth:
+            1
 
       - name:
           Checkout openwrt/packages repository
-        working-directory:
-          openwrt
-        run:
-          git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/packages
+          path:
+            openwrt/feeds/packages
+          fetch-depth:
+            1
 
       - name:
           Checkout openwrt/luci repository
-        working-directory:
-          openwrt
-        run:
-          git clone --depth=1 https://github.com/openwrt/luci.git feeds/luci
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/luci
+          path:
+            openwrt/feeds/luci
+          fetch-depth:
+            1
 
       - name:
           Checkout openwrt/routing repository
-        working-directory:
-          openwrt
-        run:
-          git clone --depth=1 https://github.com/openwrt/routing.git feeds/routing
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/routing
+          path:
+            openwrt/feeds/routing
+          fetch-depth:
+            1
 
       - name:
           Checkout openwrt/telephony repository
-        working-directory:
-          openwrt
-        run:
-          git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/telephony
+          path:
+            openwrt/feeds/telephony
+          fetch-depth:
+            1
 
       - name:
           Applying customisation
@@ -194,12 +233,3 @@ jobs:
           openwrt
         run:
           time make clean
-
-      - name: Cache build base
-        uses:
-          actions/cache@v3
-        with:
-          key:
-            build.ath79.${{ github.run_id }}.${{ github.run_attempt }}
-          path: |
-            openwrt

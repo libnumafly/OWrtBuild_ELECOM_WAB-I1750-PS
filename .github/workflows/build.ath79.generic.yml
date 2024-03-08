@@ -19,6 +19,16 @@ jobs:
           sudo apt -y remove --auto-remove --purge firefox snapd
 
       - name:
+          Update apt statuses
+        run:
+          sudo apt -y update
+
+      - name:
+          Update apt packages
+        run:
+          sudo apt -y full-upgrade --auto-remove --purge
+
+      - name:
           Install prerequisites apt packages
         run:
           sudo apt -y install asciidoc bash binutils bzip2 flex git g++ gcc time util-linux gawk gzip help2man intltool libelf-dev zlib1g-dev make libncurses-dev libssl-dev patch perl-modules libthread-queue-any-perl python2-dev python3-dev unzip wget gettext xsltproc zlib1g-dev libboost-dev libxml-parser-perl libusb-dev bin86 bcc sharutils gcc-multilib openjdk-8-jdk-headless b43-fwcutter zip
@@ -54,6 +64,11 @@ jobs:
           sudo rm -rf /usr/share/java
           sudo rm -rf /usr/share/miniconda
           sudo rm -rf /usr/local/share/vcpkg
+
+      - name:
+          df
+        run:
+          df -h
 
       - name:
           Checkout this repository

@@ -90,12 +90,12 @@ jobs:
       - name:
           Clone openwrt/openwrt repository
         run: 
-          git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
+          git clone --depth=1 https://github.com/openwrt/openwrt.git
 
       - name:
           Clone openwrt/packages repository
         working-directory:
-            openwrt
+          openwrt
         run: 
           git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
 

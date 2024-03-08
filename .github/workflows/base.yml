@@ -146,8 +146,15 @@ jobs:
           time make -j$(nproc) download
 
       - name:
-          Do the build
+          Build tools
         working-directory:
           openwrt
         run:
-          time make -j$(nproc)
+          time make -j$(nproc) tools
+
+      - name:
+          Build toolchain
+        working-directory:
+          openwrt
+        run:
+          time make -j$(nproc) toolchain

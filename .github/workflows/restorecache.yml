@@ -1,5 +1,5 @@
 name:
-  Build base for ath79.generic
+  Restore base for ath79.generic
 
 on:
   schedule:

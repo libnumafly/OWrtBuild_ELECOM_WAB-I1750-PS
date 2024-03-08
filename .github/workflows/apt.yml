@@ -21,7 +21,7 @@ jobs:
       - name:
           apt delete
         run:
-          sudo apt -y remove --auto-remove --purge aspnetcore* docker* dotnet* firefox* golang* google* mono* mysql* nginx* php* python* ruby*
+          sudo apt -y remove --auto-remove --purge aspnetcore* docker* dotnet* firefox* golang* google* mono* mysql* nginx* php* ruby*
 
       - name:
           apt install 1 of 2
@@ -55,6 +55,7 @@ jobs:
           sudo rm -rf /usr/local/share/chromedriver-linux64
           sudo rm -rf /usr/local/share/edge_driver
           sudo rm -rf /usr/local/share/gecko_driver
+          sudo rm -rf /usr/share/java/selenium-server.jar
           sudo rm -rf /usr/share/java
           sudo rm -rf /usr/share/miniconda
           sudo rm -rf /usr/local/share/vcpkg

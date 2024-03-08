@@ -27,9 +27,14 @@ jobs:
           df -h
 
       - name:
-          apt list installed
+          sudo apt list installed
         run:
-          apt list --installed
+          sudo apt list --installed
+
+      - name:
+          apt delete
+        run:
+          sudo apt -y purge --auto-remove aspnetcore* docker* dotnet* firefox* golang* google* mono* mysql* nginx* php* python* ruby*
 
       - name:
           delete
@@ -41,3 +46,9 @@ jobs:
           sudo rm -rf /usr/share/java
           sudo rm -rf /usr/share/miniconda
           sudo rm -rf /usr/local/share/vcpkg
+
+      - name:
+          df
+        run:
+          df -h
+  

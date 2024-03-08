@@ -26,7 +26,7 @@ jobs:
       - name:
           apt install 1 of 2
         run:
-          sudo apt -y install asciidoc bash binutils bzip2 flex git g++ gcc time util-linux gawk gzip help2man intltool libelf-dev zlib1g-dev make libncurses-dev libssl-dev patch perl-modules libthread-queue-any-perl python2-dev python3-dev unzip wget gettext xsltproc zlib1g-dev
+          sudo apt -y install asciidoc bash binutils bzip2 flex git g++ gcc time util-linux gawk gzip help2man intltool libelf-dev zlib1g-dev make libncurses-dev libssl-dev patch perl-modules libthread-queue-any-perl python2-dev python3-dev unzip wget gettext xsltproc zlib1g-dev libboost-dev libxml-parser-perl libusb-dev bin86 bcc sharutils gcc-multilib openjdk-7-jdk-headless b43-fwcutter zip
 
       - name:
           apt install 2 of 2

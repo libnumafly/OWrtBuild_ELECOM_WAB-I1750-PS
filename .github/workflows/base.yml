@@ -150,11 +150,11 @@ jobs:
         working-directory:
           openwrt
         run:
-          time make -j$(nproc) tools
+          time make -j$(nproc) tools/compile
 
       - name:
           Build toolchain
         working-directory:
           openwrt
         run:
-          time make -j$(nproc) toolchain
+          time make -j$(nproc) toolchain/compile

@@ -11,32 +11,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: whoami
-        run: whoami
+      - name:
+          whoami
+        run:
+          whoami
 
-      - name: nproc
-        run: echo $(nproc)
+      - name:
+          nproc
+        run:
+          echo $(nproc)
 
-      #- name: du
-      #  run: du /
+      - name:
+          df
+        run:
+          df -h
 
-      - name: df
-        run: df -h
+      - name:
+          apt list installed
+        run:
+          apt list --installed
 
-      - name: docker prune
-        run: docker system prune --volumes --force
-
-      - name: apt installed
-        run: sudo apt list --installed
-
-      - name: apt removepackage
-        run: |
-          sudo apt -y purge --auto-remove --purge php* mysql* mono* snapd* dotnet* aspnetcore* firefox* google*
-          sudo apt -y autopurge
-          sudo apt -y autoclean
-          sudo apt -y clean
-
-      - name: delete
+      - name:
+          delete
         run: |
           sudo rm -rf /usr/local/lib/android/sdk
           sudo rm -rf /usr/local/share/chromedriver-linux64
@@ -45,6 +41,3 @@ jobs:
           sudo rm -rf /usr/share/java
           sudo rm -rf /usr/share/miniconda
           sudo rm -rf /usr/local/share/vcpkg
-      
-      - name: df
-        run: df -h

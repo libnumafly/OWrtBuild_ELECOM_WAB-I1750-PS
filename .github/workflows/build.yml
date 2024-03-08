@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: 
           Update and install packages
-        run:
+        run: |
           sudo apt -y remove --auto-remove --purge firefox snapd
           sudo apt -y update
           sudo apt -y full-upgrade
@@ -152,7 +152,7 @@ jobs:
 
       - name:
           Make release
-        run:
+        run: |
           ls -laFR
           set -xe
           shopt -s nullglob

@@ -189,7 +189,7 @@ jobs:
           time make -j$(nproc) target/compile
 
       - name:
-          Build target
+          Clean
         working-directory:
           openwrt
         run:

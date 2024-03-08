@@ -1,5 +1,5 @@
 name:
-  Build base for ath79.generic
+  Build base
 
 on:
   schedule:
@@ -12,19 +12,16 @@ jobs:
     runs-on:
       ubuntu-latest
 
-    steps:
-      - name:
-          Cache build base
-        uses:
-          actions/cache@v3
-        with:
-          key:
-            build.ath79.generic.${{ github.run_id }}.${{ github.run_attempt }}
-          restore-keys: |
-            build.ath79.generic.
-          path: |
-            openwrt
+    strategy:
+      matrix:
+        target:
+          [ath79]
+        subtarget:
+          [generic]
+        profile:
+          []
 
+    steps:
       - name:
           Remove unused apt packages
         run:
@@ -91,64 +88,41 @@ jobs:
             1
 
       - name:
-          Checkout openwrt/openwrt repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/openwrt
-          path:
-            openwrt
-          fetch-depth:
-            1
+          Clone openwrt/openwrt repository
+        run: 
+          git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
 
       - name:
-          Checkout openwrt/packages repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/packages
-          path:
-            openwrt/feeds/packages
-          fetch-depth:
-            1
+          Clone openwrt/packages repository
+        run: 
+          git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
 
       - name:
-          Checkout openwrt/luci repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/luci
-          path:
-            openwrt/feeds/luci
-          fetch-depth:
-            1
+          Clone openwrt/luci repository
+        run: 
+          git clone --depth=1 https://github.com/openwrt/luci.git feeds/luci  
 
       - name:
-          Checkout openwrt/routing repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/routing
-          path:
-            openwrt/feeds/routing
-          fetch-depth:
-            1
+          Clone openwrt/routing repository
+        run: 
+          git clone --depth=1 https://github.com/openwrt/routing.git feeds/routing
 
       - name:
-          Checkout openwrt/telephony repository
+          Clone openwrt/telephony repository
+        run: 
+          git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
+
+      - name:
+          Restore cached build base
         uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/telephony
+          actions/cache@v3
+        with:
+          key:
+            ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: 
+            ${{ matrix.subtarget }}.${{ matrix.target }}.build-
           path:
-            openwrt/feeds/telephony
-          fetch-depth:
-            1
+            openwrt/staging_dir
 
       - name:
           Applying customisation
@@ -189,8 +163,9 @@ jobs:
           Import build configuration
         working-directory:
           openwrt
-        run:
-          cp ../target_config/ath79.generic.config .config
+        run: |
+          cp -f ../target_config/${{ matrix.target }}.${{ matrix.subtarget }}.config .config
+          cat ../target_config/${{ matrix.target }}.${{ matrix.subtarget }}.${{ matrix.profile }}.config >> .config
 
       - name:
           Apply build configuration
@@ -233,3 +208,13 @@ jobs:
           openwrt
         run:
           time make clean
+
+      - name:
+          Store cached build base
+        uses:
+          actions/cache@v3
+        with:
+          key:
+            ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
+          path:
+            openwrt/staging_dir

@@ -19,9 +19,9 @@ jobs:
           actions/cache@v3
         with:
           key:
-            build.ath79.${{ github.run_id }}.${{ github.run_attempt }}
+            build.ath79.generic.${{ github.run_id }}.${{ github.run_attempt }}
           restore-keys: |
-            build.ath79.
+            build.ath79.generic.
           path: |
             openwrt
 

@@ -65,63 +65,36 @@ jobs:
 
       - name:
           Checkout openwrt/openwrt repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/openwrt
-          path:
-            openwrt
-          fetch-depth:
-            1
+        run:
+          git clone --depth=1 https://github.com/openwrt/openwrt.git
 
       - name:
           Checkout openwrt/packages repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/packages
-          path:
-            openwrt/feeds/packages
-          fetch-depth:
-            1
+        working-directory:
+          openwrt
+        run:
+          git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
 
       - name:
           Checkout openwrt/luci repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/luci
-          path:
-            openwrt/feeds/luci
-          fetch-depth:
-            1
+        working-directory:
+          openwrt
+        run:
+          git clone --depth=1 https://github.com/openwrt/luci.git feeds/luci
 
       - name:
           Checkout openwrt/routing repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/routing
-          path:
-            openwrt/feeds/routing
-          fetch-depth:
-            1
+        working-directory:
+          openwrt
+        run:
+          git clone --depth=1 https://github.com/openwrt/routing.git feeds/routing
 
       - name:
           Checkout openwrt/telephony repository
-        uses:
-          actions/checkout@v4
-        with: 
-          repository:
-            openwrt/telephony
-          path:
-            openwrt/feeds/telephony
-          fetch-depth:
-            1
+        working-directory:
+          openwrt
+        run:
+          git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
       - name:
           Applying customisation

@@ -19,7 +19,7 @@ jobs:
         subtarget:
           [generic]
         profile:
-          []
+          [none]
 
     steps:
       - name:

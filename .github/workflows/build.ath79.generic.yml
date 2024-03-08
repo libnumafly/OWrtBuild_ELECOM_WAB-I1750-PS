@@ -1,0 +1,217 @@
+name:
+  Build base for ath79.generic
+
+on:
+  schedule:
+    - cron: '0 14 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on:
+      ubuntu-latest
+
+    steps:
+      - name:
+          Remove unused apt packages
+        run:
+          sudo apt -y remove --auto-remove --purge aspnetcore* docker* dotnet* firefox* golang* google* mono* mysql* nginx* php* ruby* snapd*
+
+      - name:
+          Install prerequisites apt packages
+        run:
+          sudo apt -y install asciidoc bash binutils bzip2 flex git g++ gcc time util-linux gawk gzip help2man intltool libelf-dev zlib1g-dev make libncurses-dev libssl-dev patch perl-modules libthread-queue-any-perl python2-dev python3-dev unzip wget gettext xsltproc zlib1g-dev libboost-dev libxml-parser-perl libusb-dev bin86 bcc sharutils gcc-multilib openjdk-8-jdk-headless b43-fwcutter zip
+
+      - name:
+          Install requisites apt packages
+        run:
+          sudo apt -y install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget
+
+      - name:
+          apt clean 1 of 3
+        run:
+          sudo apt -y autoremove --purge
+
+      - name:
+          apt clean 2 of 3
+        run:
+          sudo apt -y autoclean
+
+      - name:
+          apt clean 3 of 3
+        run:
+          sudo apt -y clean
+
+      - name:
+          delete
+        run: |
+          sudo rm -rf /usr/local/lib/android/sdk
+          sudo rm -rf /usr/local/share/chromedriver-linux64
+          sudo rm -rf /usr/local/share/edge_driver
+          sudo rm -rf /usr/local/share/gecko_driver
+          sudo rm -rf /usr/share/java/selenium-server.jar
+          sudo rm -rf /usr/share/java
+          sudo rm -rf /usr/share/miniconda
+          sudo rm -rf /usr/local/share/vcpkg
+
+      - name:
+          Checkout this repository
+        uses:
+          actions/checkout@v4
+        with:
+          fetch-depth:
+            1
+
+      - name:
+          Checkout openwrt/openwrt repository
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/openwrt
+          path:
+            openwrt
+          fetch-depth:
+            1
+
+      - name:
+          Checkout openwrt/packages repository
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/packages
+          path:
+            openwrt/feeds/packages
+          fetch-depth:
+            1
+
+      - name:
+          Checkout openwrt/luci repository
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/luci
+          path:
+            openwrt/feeds/luci
+          fetch-depth:
+            1
+
+      - name:
+          Checkout openwrt/routing repository
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/routing
+          path:
+            openwrt/feeds/routing
+          fetch-depth:
+            1
+
+      - name:
+          Checkout openwrt/telephony repository
+        uses:
+          actions/checkout@v4
+        with: 
+          repository:
+            openwrt/telephony
+          path:
+            openwrt/feeds/telephony
+          fetch-depth:
+            1
+
+      - name:
+          Applying customisation
+        working-directory:
+          openwrt
+        run:
+          patch -Np1 < ../feeds.github.patch
+
+      - name:
+          Update feeds step 1 of 2
+        working-directory:
+          openwrt
+        run:
+          ./scripts/feeds update -a
+
+      - name:
+          Update feeds step 2 of 2
+        working-directory:
+          openwrt
+        run:
+          ./scripts/feeds update -a
+
+      - name:
+          Install feeds step 1 of 2
+        working-directory:
+          openwrt
+        run:
+          ./scripts/feeds install -a
+
+      - name:
+          Install feeds step 2 of 2
+        working-directory:
+          openwrt
+        run:
+          ./scripts/feeds install -a
+
+      - name:
+          Import build configuration
+        working-directory:
+          openwrt
+        run:
+          cp ../target_config/ath79.generic.config .config
+
+      - name:
+          Apply build configuration
+        working-directory:
+          openwrt
+        run:
+          make defconfig
+
+      - name:
+          Pre-download sources
+        working-directory:
+          openwrt
+        run:
+          time make -j$(nproc) download
+
+      - name:
+          Build tools
+        working-directory:
+          openwrt
+        run:
+          time make -j$(nproc) tools/compile
+
+      - name:
+          Build toolchain
+        working-directory:
+          openwrt
+        run:
+          time make -j$(nproc) toolchain/compile
+
+      - name:
+          Build target
+        working-directory:
+          openwrt
+        run:
+          time make -j$(nproc) target/compile
+
+      - name:
+          Build target
+        working-directory:
+          openwrt
+        run:
+          time make clean
+
+      - name: Cache build base
+        uses:
+          actions/cache@v3
+        with:
+          key:
+            build.ath79.${{ github.run_id }}
+          path: |
+            openwrt

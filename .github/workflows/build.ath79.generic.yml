@@ -212,6 +212,6 @@ jobs:
           actions/cache@v3
         with:
           key:
-            build.ath79.${{ github.run_id }}
+            build.ath79.${{ github.run_id }}.${{ github.run_attempt }}
           path: |
             openwrt

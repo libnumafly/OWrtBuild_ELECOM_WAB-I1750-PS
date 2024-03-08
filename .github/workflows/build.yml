@@ -100,15 +100,45 @@ jobs:
           patch -Np1 < ../feeds.github.patch
 
       - name:
-          Setup to build
+          Update feeds step 1 of 2
         working-directory:
           openwrt
-        run: |
+        run:
           ./scripts/feeds update -a
+
+      - name:
+          Update feeds step 2 of 2
+        working-directory:
+          openwrt
+        run:
           ./scripts/feeds update -a
+
+      - name:
+          Install feeds step 1 of 2
+        working-directory:
+          openwrt
+        run:
           ./scripts/feeds install -a
+
+      - name:
+          Install feeds step 2 of 2
+        working-directory:
+          openwrt
+        run:
           ./scripts/feeds install -a
+
+      - name:
+          Import target configuration
+        working-directory:
+          openwrt
+        run:
           cp ../target_config/ath79_generic_DEVICE_elecom_wab-i1750-ps.config .config
+
+      - name:
+          Apply target configuration
+        working-directory:
+          openwrt
+        run:
           make defconfig
 
       - name:

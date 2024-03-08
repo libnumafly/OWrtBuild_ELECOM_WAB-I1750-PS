@@ -165,7 +165,6 @@ jobs:
           openwrt
         run: |
           cp -f ../target_config/${{ matrix.target }}.${{ matrix.subtarget }}.config .config
-          cat ../target_config/${{ matrix.target }}.${{ matrix.subtarget }}.${{ matrix.profile }}.config >> .config
 
       - name:
           Apply build configuration

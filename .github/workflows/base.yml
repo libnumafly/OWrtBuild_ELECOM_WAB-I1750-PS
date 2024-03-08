@@ -158,3 +158,10 @@ jobs:
           openwrt
         run:
           time make -j$(nproc) toolchain/compile
+
+      - name:
+          Build target
+        working-directory:
+          openwrt
+        run:
+          time make -j$(nproc) target/compile

@@ -129,7 +129,7 @@ jobs:
         working-directory:
           openwrt
         run:
-          cp ../target_config/ath79_generic.config .config
+          cp ../target_config/ath79.generic.config .config
 
       - name:
           Apply target configuration

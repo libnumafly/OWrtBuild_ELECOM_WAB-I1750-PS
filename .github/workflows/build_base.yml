@@ -148,6 +148,7 @@ jobs:
             openwrt/staging_dir
             openwrt/tmp
             openwrt/logs
+            openwrt/feeds
             openwrt/files
             openwrt/target/linux/feeds
             openwrt/overlay

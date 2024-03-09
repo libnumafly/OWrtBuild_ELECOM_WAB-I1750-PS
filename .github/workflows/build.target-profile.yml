@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Remove unnecessary apt packages
-        run: sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google-chrome* mono* snapd*
+        run: sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
   
       - name: Remove unnecessary apt-installed files
         run: |

@@ -7,6 +7,10 @@ on:
 
   workflow_dispatch:
 
+env:
+  CCACHE_DIR:
+    /home/kensei/build_openwrt/test
+
 jobs:
   build:
     runs-on:
@@ -163,6 +167,13 @@ jobs:
           openwrt
         run:
           patch -Np1 < ../feeds.github.patch
+
+      - name:
+          Apply environment value
+        working-directory:
+          openwrt
+        run:
+          echo "{CCACHE_DIR}={$(pwd)}" >> "$GITHUB_ENV"
 
       - name:
           Update feeds step 1 of 2

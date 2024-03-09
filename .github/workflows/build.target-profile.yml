@@ -99,28 +99,9 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts.${{ inputs.profile }}.${{ inputs.subtarget }}.${{ inputs.target }}
+          name: artifacts.${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}
+          compression-level: 9
+          overwrite: true
           path: |
             openwrt/bin/targets/${{ inputs.target }}/${{ inputs.subtarget }}/*
-
-#  steps:
-#    - name:
-#      Download artifacts
-#        uses:
-#          actions/download-artifact@v4
-#
-#      - name:
-#          Make release
-#        run: |
-#          ls -laFR
-#          set -xe
-#          shopt -s nullglob
-#          RELDATE="$(date +'%Y-%m-%d %H:%M')"
-#          NAME="Auto-Build $RELDATE"
-#          TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
-#          gh release create "$TAGNAME" --repo ${{ github.repository }} --target "main" --title "$NAME" artifact/targets/ath79/generic/*.{bin,buildinfo,json,manifest} artifact/targets/ath79/generic/sha256sums
-#          echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
-#          echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
-#        env:
-#          GITHUB_TOKEN:
-#            ${{ github.token }}
+            !openwrt/bin/targets/${{ inputs.target }}/${{ inputs.subtarget }}/packages

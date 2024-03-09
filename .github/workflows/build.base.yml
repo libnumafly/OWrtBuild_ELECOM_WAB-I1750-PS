@@ -1,4 +1,4 @@
-name: Build OpenWrt target base
+name: Build OpenWrt target tools/toolchain
 
 permissions:
   actions: write
@@ -25,7 +25,7 @@ on:
 jobs:
 
   build_base:
-    name: Build target base
+    name: Build target tools/toolchain
     runs-on: ubuntu-22.04
 
     steps:

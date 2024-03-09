@@ -16,7 +16,18 @@ on:
         required: true
         type: string
 
-    
+  workflow_dispatch:
+    inputs:
+      target:
+        required: true
+        type: string
+      subtarget:
+        required: true
+        type: string
+      profile:
+        required: true
+        type: string
+
 jobs:
 
   build_firmware:
@@ -85,7 +96,12 @@ jobs:
         working-directory: openwrt
         run: make -j$(nproc)
 
-    
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts.${{ inputs.profile }}.${{ inputs.subtarget }}.${{ inputs.target }}
+          path: |
+            openwrt/bin/targets/${{ inputs.profile }}/${{ inputs.subtarget }}/*
+
 #  steps:
 #    - name:
 #      Download artifacts

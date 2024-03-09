@@ -23,9 +23,31 @@ jobs:
 
     steps:
       - name:
+          Delete unnecessary files
+        run: |
+          sudo rm -rf /usr/local/lib/android/sdk
+          sudo rm -rf /usr/local/share/chromedriver-linux64
+          sudo rm -rf /usr/local/share/edge_driver
+          sudo rm -rf /usr/local/share/gecko_driver
+          sudo rm -rf /usr/share/java/selenium-server.jar
+          sudo rm -rf /usr/share/java
+          sudo rm -rf /usr/share/miniconda
+          sudo rm -rf /usr/local/share/vcpkg
+
+      - name:
           Remove unnecessary apt packages
         run:
           sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
+
+      - name:
+          Remove unnecessary apt-installed files
+        run: |
+          sudo rm -rf /etc/mono/certstore
+          sudo rm -rf /usr/lib/mono
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /etc/mono
+          sudo rm -rf /usr/libexec/docker
+          sudo rm -rf /etc/docker
 
       - name:
           Update apt statuses
@@ -40,12 +62,12 @@ jobs:
       - name:
           Install prerequisites apt packages
         run:
-          sudo apt -y install bash binutils bzip2 flex git g++ gcc time util-linux gawk gzip help2man intltool libelf-dev zlib1g-dev make libncurses-dev libssl-dev patch perl-modules libthread-queue-any-perl python3-dev unzip wget gettext xsltproc zlib1g-dev libboost-dev libxml-parser-perl libusb-dev bin86 bcc sharutils gcc-multilib openjdk-8-jdk-headless b43-fwcutter zip
+          sudo apt -y install b43-fwcutter bash bcc bin86 binutils bzip2 flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev zlib1g-dev
 
       - name:
           Install requisites apt packages
         run:
-          sudo apt -y install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget
+          sudo apt -y install bison build-essential clang file flex g++ g++-multilib gawk gcc-multilib gettext git libncurses-dev libssl-dev python3-distutils rsync unzip wget zlib1g-dev
 
       - name:
           apt clean 1 of 3
@@ -61,18 +83,6 @@ jobs:
           apt clean 3 of 3
         run:
           sudo apt -y clean
-
-      - name:
-          Delete unnecessary files
-        run: |
-          sudo rm -rf /usr/local/lib/android/sdk
-          sudo rm -rf /usr/local/share/chromedriver-linux64
-          sudo rm -rf /usr/local/share/edge_driver
-          sudo rm -rf /usr/local/share/gecko_driver
-          sudo rm -rf /usr/share/java/selenium-server.jar
-          sudo rm -rf /usr/share/java
-          sudo rm -rf /usr/share/miniconda
-          sudo rm -rf /usr/local/share/vcpkg
 
       - name:
           df

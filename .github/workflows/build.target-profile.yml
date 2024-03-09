@@ -96,7 +96,8 @@ jobs:
         working-directory: openwrt
         run: make -j$(nproc)
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: artifacts.${{ inputs.profile }}.${{ inputs.subtarget }}.${{ inputs.target }}
           path: |

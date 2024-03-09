@@ -1,4 +1,4 @@
-name: Build OpenWrt build base
+name: Build OpenWrt firmwares
 
 permissions:
   actions: write

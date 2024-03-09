@@ -1,0 +1,37 @@
+name: Build OpenWrt build base
+
+permissions:
+  actions: write
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+  workflow_dispatch:
+    
+
+jobs:
+
+  build_base:
+    name: Build target base
+    uses: ./.github/workflows/build.base.yml
+    with:
+      target: ${{ matrix.target }}
+      subtarget: ${{ matrix.subtarget }}
+    strategy:
+      matrix:
+        target: [ath79]
+        subtarget: [generic]
+
+  build_firmware:
+    name: Build firmware (for ELECOM WAB series)
+    uses: ./.github/workflows/build.base.yml
+    with:
+      target: ${{ matrix.target }}
+      subtarget: ${{ matrix.subtarget }}
+      profile: ${{ matrix.profile }}
+    strategy:
+      matrix:
+        target: [ath79]
+        subtarget: [generic]
+        profile: [elecom_wab-i1750-ps,elecom_wab-s1167-ps,elecom_wab-s600-ps]

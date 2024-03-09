@@ -1,39 +1,27 @@
-name: Build OpenWrt build base
+name: Build OpenWrt target base
 
 permissions:
   actions: write
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
-
-  workflow_dispatch:
-    
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+      subtarget:
+        required: true
+        type: string      
 
 jobs:
-  build:
+
+  build_base:
     name: Build target base
     runs-on: ubuntu-22.04
 
-    strategy:
-      matrix:
-        target: [ath79]
-        subtarget: [generic]
-
     steps:
-      - name: Delete unnecessary files
-        run: |
-          sudo rm -rf /usr/local/lib/android/sdk
-          sudo rm -rf /usr/local/share/chromedriver-linux64
-          sudo rm -rf /usr/local/share/edge_driver
-          sudo rm -rf /usr/local/share/gecko_driver
-          sudo rm -rf /usr/share/java/selenium-server.jar
-          sudo rm -rf /usr/share/java
-          sudo rm -rf /usr/share/miniconda
-          sudo rm -rf /usr/local/share/vcpkg
-
       - name: Remove unnecessary apt packages
-        run: sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
+        run: sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google-chrome* mono* snapd*
 
       - name: Remove unnecessary apt-installed files
         run: |
@@ -50,11 +38,8 @@ jobs:
       - name: Update apt packages
         run: sudo apt -y full-upgrade --auto-remove --purge
 
-      - name: Install prerequisites apt packages
-        run: sudo apt -y install b43-fwcutter bash bcc bin86 binutils bzip2 flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev zlib1g-dev
-
-      - name: Install requisites apt packages
-        run: sudo apt -y install bison build-essential clang file flex g++ g++-multilib gawk gcc-multilib gettext git libncurses-dev libssl-dev python3-distutils rsync unzip wget zlib1g-dev
+      - name: Install requirement apt packages
+        run: sudo apt -y install b43-fwcutter bash bcc bin86 binutils bzip2 flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev bison build-essential clang file g++-multilib python3-distutils rsync
 
       - name: apt clean 1 of 3
         run: sudo apt -y autoremove --purge
@@ -114,7 +99,7 @@ jobs:
 
       - name: Import build configuration (target specification)
         working-directory: openwrt
-        run: cat ../target_config/${{ matrix.target }}.${{ matrix.subtarget }}.config > .config
+        run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
 
       - name: Apply build configuration
         working-directory: openwrt
@@ -139,5 +124,5 @@ jobs:
       - name: Create cached build base
         uses: actions/cache/save@v4
         with:
-          key: ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
+          key: ${{ inputs.subtarget }}.${{ inputs.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
           path: openwrt

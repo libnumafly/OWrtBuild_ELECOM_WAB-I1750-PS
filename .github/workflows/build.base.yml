@@ -25,7 +25,7 @@ on:
 jobs:
 
   build_base:
-    name: Build target tools/toolchain
+    name: Build target tools/toolchain (${{ inputs.target }} -> ${{ inputs.subtarget }})
     runs-on: ubuntu-22.04
 
     steps:

@@ -1,1 +1,1 @@
-[![Build firmware for ELECOM WAB-I1750-PS](https://github.com/libnumafly/OpenWrtBuild_ELECOM_WAB/actions/workflows/build.yml/badge.svg)](https://github.com/libnumafly/OpenWrtBuild_ELECOM_WAB/actions/workflows/build.yml)
+[![Build OpenWrt firmwares (automatic)](https://github.com/libnumafly/OpenWrtBuild_ELECOM_WAB/actions/workflows/build.automatic.yml/badge.svg)](https://github.com/libnumafly/OpenWrtBuild_ELECOM_WAB/actions/workflows/build.automatic.yml)

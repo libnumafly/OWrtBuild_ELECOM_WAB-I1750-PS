@@ -100,7 +100,7 @@ jobs:
         with:
           name: artifacts.${{ inputs.profile }}.${{ inputs.subtarget }}.${{ inputs.target }}
           path: |
-            openwrt/bin/targets/${{ inputs.profile }}/${{ inputs.subtarget }}/*
+            openwrt/bin/targets/${{ inputs.target }}/${{ inputs.subtarget }}/*
 
 #  steps:
 #    - name:

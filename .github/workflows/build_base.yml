@@ -131,7 +131,7 @@ jobs:
           git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
       - name:
-          Restore cached build base
+          Processing cached build base
         uses:
           actions/cache@v3
         with:
@@ -237,25 +237,3 @@ jobs:
           openwrt
         run:
           time make clean
-
-      - name:
-          Store cached build base
-        uses:
-          actions/cache@v3
-        with:
-          key:
-            ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
-          path: |
-            openwrt/.ccache
-            openwrt/env
-            openwrt/dl
-            openwrt/bin
-            openwrt/build_dir
-            openwrt/staging_dir
-            openwrt/tmp
-            openwrt/logs
-            openwrt/files
-            openwrt/target/linux/feeds
-            openwrt/overlay
-            openwrt/package/feeds
-            openwrt/package/openwrt-packages

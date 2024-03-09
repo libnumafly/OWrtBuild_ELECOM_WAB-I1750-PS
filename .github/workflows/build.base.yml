@@ -44,7 +44,7 @@ jobs:
       - name: Update apt statuses
         run: sudo apt -y update
 
-      - name: Update apt packages
+      - name: Upgrade apt packages
         run: sudo apt -y full-upgrade --auto-remove --purge
 
       - name: Install requirement apt packages

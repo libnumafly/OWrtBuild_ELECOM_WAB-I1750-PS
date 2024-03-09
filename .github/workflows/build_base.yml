@@ -169,13 +169,6 @@ jobs:
           patch -Np1 < ../feeds.github.patch
 
       - name:
-          Apply environment value
-        working-directory:
-          openwrt
-        run:
-          echo "{CCACHE_DIR}={$(pwd)}" >> "$GITHUB_ENV"
-
-      - name:
           Update feeds step 1 of 2
         working-directory:
           openwrt

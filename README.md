@@ -1,1 +1,1 @@
-[![Build OpenWrt firmwares (automatic)](https://github.com/libnumafly/OpenWrtBuild_ELECOM_WAB/actions/workflows/build.automatic.yml/badge.svg)](https://github.com/libnumafly/OpenWrtBuild_ELECOM_WAB/actions/workflows/build.automatic.yml)
+[![Build OpenWrt firmwares (automatic)](https://github.com/libnumafly/OpenWrtBuild/actions/workflows/build.automatic.yml/badge.svg)](https://github.com/libnumafly/OpenWrtBuild/actions/workflows/build.automatic.yml)

@@ -89,7 +89,7 @@ jobs:
           sudo apt -y clean
 
       - name:
-          df
+          df check
         run:
           df -h
 
@@ -135,13 +135,6 @@ jobs:
           git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
       - name:
-          ls
-        working-directory:
-          openwrt
-        run: 
-          ls -laF
-
-      - name:
           Processing cached build base
         uses:
           actions/cache@v4
@@ -151,15 +144,9 @@ jobs:
           restore-keys: 
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-
           path: |
+            openwrt/.ccache
             openwrt/build_dir
             openwrt/staging_dir
-
-      - name:
-          ls
-        working-directory:
-          openwrt
-        run:
-          ls -laF
 
       - name:
           Apply customisation
@@ -216,6 +203,13 @@ jobs:
           openwrt
         run:
           time make -j$(nproc) download
+
+      - name:
+          Build tools/ccache
+        working-directory:
+          openwrt
+        run:
+          time make -j$(nproc) tools/ccache/compile
 
       - name:
           Build tools

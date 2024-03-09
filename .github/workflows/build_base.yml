@@ -131,6 +131,13 @@ jobs:
           git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
       - name:
+          ls
+        working-directory:
+          openwrt
+        run: 
+          ls -laF
+
+      - name:
           Processing cached build base
         uses:
           actions/cache@v4
@@ -140,19 +147,15 @@ jobs:
           restore-keys: 
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-
           path: |
-            openwrt/.ccache
-            openwrt/env
-            openwrt/dl
-            openwrt/bin
             openwrt/build_dir
             openwrt/staging_dir
-            openwrt/tmp
-            openwrt/logs
-            openwrt/files
-            openwrt/target/linux/feeds
-            openwrt/overlay
-            openwrt/package/feeds
-            openwrt/package/openwrt-packages
+
+      - name:
+          ls
+        working-directory:
+          openwrt
+        run:
+          ls -laF
 
       - name:
           Apply customisation

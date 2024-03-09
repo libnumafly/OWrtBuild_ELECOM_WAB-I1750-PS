@@ -1,0 +1,143 @@
+name: Build OpenWrt build base
+
+permissions:
+  actions: write
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+  workflow_dispatch:
+    
+
+jobs:
+  build:
+    name: Build target base
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        target: [ath79]
+        subtarget: [generic]
+
+    steps:
+      - name: Delete unnecessary files
+        run: |
+          sudo rm -rf /usr/local/lib/android/sdk
+          sudo rm -rf /usr/local/share/chromedriver-linux64
+          sudo rm -rf /usr/local/share/edge_driver
+          sudo rm -rf /usr/local/share/gecko_driver
+          sudo rm -rf /usr/share/java/selenium-server.jar
+          sudo rm -rf /usr/share/java
+          sudo rm -rf /usr/share/miniconda
+          sudo rm -rf /usr/local/share/vcpkg
+
+      - name: Remove unnecessary apt packages
+        run: sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
+
+      - name: Remove unnecessary apt-installed files
+        run: |
+          sudo rm -rf /etc/mono/certstore
+          sudo rm -rf /usr/lib/mono
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /etc/mono
+          sudo rm -rf /usr/libexec/docker
+          sudo rm -rf /etc/docker
+
+      - name: Update apt statuses
+        run: sudo apt -y update
+
+      - name: Update apt packages
+        run: sudo apt -y full-upgrade --auto-remove --purge
+
+      - name: Install prerequisites apt packages
+        run: sudo apt -y install b43-fwcutter bash bcc bin86 binutils bzip2 flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev zlib1g-dev
+
+      - name: Install requisites apt packages
+        run: sudo apt -y install bison build-essential clang file flex g++ g++-multilib gawk gcc-multilib gettext git libncurses-dev libssl-dev python3-distutils rsync unzip wget zlib1g-dev
+
+      - name: apt clean 1 of 3
+        run: sudo apt -y autoremove --purge
+
+      - name: apt clean 2 of 3
+        run: sudo apt -y autoclean
+
+      - name: apt clean 3 of 3
+        run: sudo apt -y clean
+
+      - name: df check
+        run: df -h
+
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Clone openwrt/openwrt repository
+        run: git clone --depth=1 https://github.com/openwrt/openwrt.git
+
+      - name: Clone openwrt/packages repository
+        working-directory: openwrt
+        run: git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
+
+      - name: Clone openwrt/luci repository
+        working-directory: openwrt
+        run: git clone --depth=1 https://github.com/openwrt/luci.git feeds/luci  
+
+      - name: Clone openwrt/routing repository
+        working-directory: openwrt
+        run: git clone --depth=1 https://github.com/openwrt/routing.git feeds/routing
+
+      - name: Clone openwrt/telephony repository
+        working-directory: openwrt
+        run: git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
+
+      - name: Apply customisation
+        working-directory: openwrt
+        run: patch -Np1 < ../feeds.github.patch
+
+      - name: Update feeds step 1 of 2
+        working-directory: openwrt
+        run: ./scripts/feeds update -a
+
+      - name: Update feeds step 2 of 2
+        working-directory: openwrt
+        run: ./scripts/feeds update -a
+
+      - name: Install feeds step 1 of 2
+        working-directory: openwrt
+        run: ./scripts/feeds install -a
+
+      - name: Install feeds step 2 of 2
+        working-directory: openwrt
+        run: ./scripts/feeds install -a
+
+      - name: Import build configuration (target specification)
+        working-directory: openwrt
+        run: cat ../target_config/${{ matrix.target }}.${{ matrix.subtarget }}.config > .config
+
+      - name: Apply build configuration
+        working-directory: openwrt
+        run: make defconfig
+
+      - name: Pre-download sources
+        working-directory: openwrt
+        run: make -j$(nproc) download
+
+      - name: Build tools
+        working-directory: openwrt
+        run: make -j$(nproc) tools/compile
+
+      - name: Build toolchain
+        working-directory: openwrt
+        run: make -j$(nproc) toolchain/compile
+
+      - name: Cleanup
+        working-directory: openwrt
+        run: make clean
+
+      - name: Create cached build base
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
+          path: openwrt

@@ -133,13 +133,13 @@ jobs:
       - name:
           Processing cached build base
         uses:
-          actions/cache@v3
+          actions/cache@v4
         with:
           key:
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
           restore-keys: 
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-
-          path:
+          path: |
             openwrt/.ccache
             openwrt/env
             openwrt/dl

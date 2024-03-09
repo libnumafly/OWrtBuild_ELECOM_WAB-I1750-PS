@@ -231,10 +231,3 @@ jobs:
           openwrt
         run:
           time make -j$(nproc) target/compile
-
-      - name:
-          Clean
-        working-directory:
-          openwrt
-        run:
-          time make clean

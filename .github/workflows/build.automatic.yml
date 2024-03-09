@@ -25,7 +25,7 @@ jobs:
 
   build_firmware:
     name: Build firmware (for ELECOM WAB series)
-    uses: ./.github/workflows/build.base.yml
+    uses: ./.github/workflows/build.target-profile.yml
     with:
       target: ${{ matrix.target }}
       subtarget: ${{ matrix.subtarget }}

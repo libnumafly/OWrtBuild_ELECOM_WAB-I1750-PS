@@ -79,6 +79,11 @@ jobs:
       - name: df check
         run: df -h
 
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
       - name: Import cached build base
         uses: actions/cache/restore@v4
         with:

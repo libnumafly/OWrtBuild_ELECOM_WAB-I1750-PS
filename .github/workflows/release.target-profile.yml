@@ -30,32 +30,28 @@ on:
 
 jobs:
 
-  dummy:
-    name: Build firmware
+  packing:
+    name: Packing firmware to release (${{ inputs.target }} > ${{ inputs.subtarget }} > ${{ inputs.profile }})
     runs-on: ubuntu-22.04
 
     steps:
-      - name: test
-        run: echo
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: artifacts.${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}
+        path: artifacts
 
-#  steps:
-#    - name:
-#      Download artifacts
-#        uses:
-#          actions/download-artifact@v4
-#
-#      - name:
-#          Make release
-#        run: |
-#          ls -laFR
-#          set -xe
-#          shopt -s nullglob
-#          RELDATE="$(date +'%Y-%m-%d %H:%M')"
-#          NAME="Auto-Build $RELDATE"
-#          TAGNAME="autobuild-$(date +'%Y-%m-%d-%H-%M')"
-#          gh release create "$TAGNAME" --repo ${{ github.repository }} --target "main" --title "$NAME" artifact/targets/ath79/generic/*.{bin,buildinfo,json,manifest} artifact/targets/ath79/generic/sha256sums
-#          echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
-#          echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
-#        env:
-#          GITHUB_TOKEN:
-#            ${{ github.token }}
+    - name: Make release
+      run: |
+        ls -laFR
+        set -xe
+        shopt -s nullglob
+        RELDATE="$(date +'%Y-%m-%d %H:%M')"
+        NAME="Firmware for ${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}, Auto-Build"
+        TAGNAME=${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}
+        gh release create "$TAGNAME" --repo ${{ github.repository }} --title "$NAME" artifacts/*
+        echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
+        echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN:
+          ${{ github.token }}

@@ -34,7 +34,6 @@ jobs:
     name: Build firmware
     runs-on: ubuntu-22.04
 
-
 #  steps:
 #    - name:
 #      Download artifacts

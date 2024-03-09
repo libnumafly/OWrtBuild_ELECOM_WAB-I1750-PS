@@ -13,6 +13,15 @@ on:
         required: true
         type: string      
 
+  workflow_dispatch: 
+    inputs:
+      target:
+        required: true
+        type: string
+      subtarget:
+        required: true
+        type: string      
+
 jobs:
 
   build_base:

@@ -130,8 +130,19 @@ jobs:
           restore-keys: 
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-
           path:
-            openwrt/staging_dir
             openwrt/.ccache
+            openwrt/env
+            openwrt/dl
+            openwrt/bin
+            openwrt/build_dir
+            openwrt/staging_dir
+            openwrt/tmp
+            openwrt/logs
+            openwrt/files
+            openwrt/target/linux/feeds
+            openwrt/overlay
+            openwrt/package/feeds
+            openwrt/package/openwrt-packages
 
       - name:
           Apply customisation
@@ -225,5 +236,16 @@ jobs:
           key:
             ${{ matrix.subtarget }}.${{ matrix.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
           path: |
-            openwrt/staging_dir
             openwrt/.ccache
+            openwrt/env
+            openwrt/dl
+            openwrt/bin
+            openwrt/build_dir
+            openwrt/staging_dir
+            openwrt/tmp
+            openwrt/logs
+            openwrt/files
+            openwrt/target/linux/feeds
+            openwrt/overlay
+            openwrt/package/feeds
+            openwrt/package/openwrt-packages

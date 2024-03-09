@@ -147,6 +147,7 @@ jobs:
             openwrt/.ccache
             openwrt/build_dir
             openwrt/staging_dir
+            openwrt/tmp
 
       - name:
           Apply customisation

@@ -101,7 +101,7 @@ jobs:
 
   release_firmware:
     name: Release firmware (${{ inputs.target }}, ${{ inputs.subtarget }}, ${{ inputs.profile }})
-    if: ${{ inputs.dorelease == 1 }}
+    if: ${{ inputs.dorelease == 'true' }}
     needs: build_firmware
     uses: ./.github/workflows/release.target-profile.yml
     with:

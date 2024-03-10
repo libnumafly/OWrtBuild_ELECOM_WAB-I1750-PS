@@ -48,7 +48,7 @@ jobs:
         shopt -s nullglob
         RELDATE="$(date +'%Y-%m-%d %H:%M')"
         NAME="Firmware for ${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}, Auto-Build"
-        TAGNAME="${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}__autobuild-$(date +'%Y-%m-%d-%H-%M')"
+        TAGNAME="${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}.autobuild-$(date +'%Y-%m-%d-%H-%M')"
         gh release create "$TAGNAME" --repo ${{ github.repository }} --title "$NAME" artifacts/*
         echo "tag_name=${TAGNAME}" >> $GITHUB_OUTPUT
         echo "rel_date=${RELDATE}" >> $GITHUB_OUTPUT

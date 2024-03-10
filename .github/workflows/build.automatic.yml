@@ -31,7 +31,7 @@ jobs:
       target: ${{ matrix.target }}
       subtarget: ${{ matrix.subtarget }}
       profile: ${{ matrix.profile }}
-      dorelease: 1
+      dorelease: true
     strategy:
       matrix:
         target: [ath79]

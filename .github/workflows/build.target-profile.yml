@@ -66,15 +66,9 @@ jobs:
         with:
           key: ${{ inputs.subtarget }}.${{ inputs.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
           restore-keys: ${{ inputs.subtarget }}.${{ inputs.target }}.build-
+          fail-on-cache-miss: true
           path: openwrt
 
-      - name: Build target build base, if cached build base not exist
-        if: ${{ steps.import-cached-base.cache-hit == 0 }}
-        uses: ./build.target-base.yml
-        with:
-          target: ${{ inputs.target }}
-          subtarget: ${{ inputs.subtarget }}
-    
       - name: Import build configuration (target specification)
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config

@@ -25,6 +25,11 @@ jobs:
     name: Build target build base (${{ inputs.target }}, ${{ inputs.subtarget }})
     runs-on: ubuntu-22.04
 
+    env:
+      CCACHE_COMPILERTYPE: gcc
+      CCACHE_DEPEND: true
+      CCACHE_SLOPPINESS: file_macro,locale,time_macros
+
     steps:
       - name: Run apt tasks
         run: |
@@ -78,6 +83,13 @@ jobs:
           ./scripts/feeds install -a
           ./scripts/feeds install -a
 
+      - name: Ccache cache
+        uses: actions/cache@v4
+        with:
+          key: ccache-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: ccache-
+          path: openwrt/.ccache
+
       - name: Import build configuration (target specification)
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
@@ -106,4 +118,6 @@ jobs:
         uses: actions/cache/save@v4
         with:
           key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-${{ github.run_id }}.${{ github.run_attempt }}
-          path: openwrt
+          path: |
+            openwrt
+            !openwrt/.ccache

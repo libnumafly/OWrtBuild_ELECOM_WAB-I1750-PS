@@ -42,6 +42,11 @@ jobs:
     name: Build firmware (${{ inputs.target }}, ${{ inputs.subtarget }}, ${{ inputs.profile }})
     runs-on: ubuntu-22.04
 
+    env:
+      CCACHE_COMPILERTYPE: gcc
+      CCACHE_DEPEND: true
+      CCACHE_SLOPPINESS: file_macro,locale,time_macros
+
     steps:
       - name: Run apt tasks
         run: |
@@ -72,6 +77,13 @@ jobs:
       - name: Exit when cache-miss
         if: ${{ steps.import-cached-base.cache-hit == 'false' }}
         run: false
+
+      - name: Ccache cache
+        uses: actions/cache@v4
+        with:
+          key: ccache-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: ccache-
+          path: openwrt/.ccache
 
       - name: Import build configuration (target specification)
         working-directory: openwrt

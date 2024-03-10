@@ -110,7 +110,7 @@ jobs:
             openwrt/bin/targets/${{ inputs.target }}/${{ inputs.subtarget }}/*
             !openwrt/bin/targets/${{ inputs.target }}/${{ inputs.subtarget }}/packages
 
-      - name: Release firmware (for ELECOM WAB series)
+      - name: Release firmware (${{ inputs.target }} > ${{ inputs.subtarget }} > ${{ inputs.profile }})
         if: ${{ inputs.dorelease == 1 }}
         uses: ./.github/workflows/release.target-profile.yml
         with:

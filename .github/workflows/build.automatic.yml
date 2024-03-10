@@ -1,7 +1,7 @@
 name: Build OpenWrt firmwares (automatic)
 
 permissions:
-  actions: write
+  contents: write
 
 on:
   schedule:

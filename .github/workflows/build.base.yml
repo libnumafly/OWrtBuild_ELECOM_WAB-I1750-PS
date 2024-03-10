@@ -1,8 +1,5 @@
 name: Build OpenWrt target tools/toolchain
 
-permissions:
-  actions: write
-
 on:
   workflow_call:
     inputs:

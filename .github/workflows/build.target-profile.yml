@@ -69,6 +69,10 @@ jobs:
           fail-on-cache-miss: true
           path: openwrt
 
+      - name: Exit when cache-miss
+        if: steps.import-cached-base.cache-hit != 'true'
+        run: false
+
       - name: Import build configuration (target specification)
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config

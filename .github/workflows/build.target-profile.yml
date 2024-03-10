@@ -70,7 +70,7 @@ jobs:
 
       - name: Build target build base, if cached build base not exist
         if: ${{ steps.import-cached-base.cache-hit == 0 }}
-        uses: build.target-base.yml
+        uses: ./build.target-base.yml
         with:
           target: ${{ inputs.target }}
           subtarget: ${{ inputs.subtarget }}

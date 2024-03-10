@@ -64,8 +64,8 @@ jobs:
         id: import-cached-base
         uses: actions/cache/restore@v4
         with:
-          key: ${{ inputs.subtarget }}.${{ inputs.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
-          restore-keys: ${{ inputs.subtarget }}.${{ inputs.target }}.build-
+          key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-
           fail-on-cache-miss: true
           path: openwrt
 

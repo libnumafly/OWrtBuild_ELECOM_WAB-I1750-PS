@@ -105,5 +105,5 @@ jobs:
       - name: Create target build base cache
         uses: actions/cache/save@v4
         with:
-          key: ${{ inputs.subtarget }}.${{ inputs.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
+          key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-${{ github.run_id }}.${{ github.run_attempt }}
           path: openwrt

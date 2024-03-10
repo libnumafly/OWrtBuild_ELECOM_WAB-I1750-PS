@@ -23,28 +23,15 @@ jobs:
         target: [ath79]
         subtarget: [generic]
 
-  build_firmware:
-    name: Build firmware (for ELECOM WAB series)
+  build_firmware-elecom_wab:
+    name: Build and release firmware (for ELECOM WAB series)
     needs: build_base
     uses: ./.github/workflows/build.target-profile.yml
     with:
       target: ${{ matrix.target }}
       subtarget: ${{ matrix.subtarget }}
       profile: ${{ matrix.profile }}
-    strategy:
-      matrix:
-        target: [ath79]
-        subtarget: [generic]
-        profile: [elecom_wab-i1750-ps,elecom_wab-s1167-ps,elecom_wab-s600-ps]
-
-  release_firmware:
-    name: Release firmware (for ELECOM WAB series)
-    needs: build_firmware
-    uses: ./.github/workflows/release.target-profile.yml
-    with:
-      target: ${{ matrix.target }}
-      subtarget: ${{ matrix.subtarget }}
-      profile: ${{ matrix.profile }}
+      dorelease: 1
     strategy:
       matrix:
         target: [ath79]

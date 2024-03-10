@@ -15,7 +15,11 @@ on:
       profile:
         required: true
         type: string
-
+      dorelease:
+        required: false
+        type: boolean
+        default: false
+  
   workflow_dispatch:
     inputs:
       target:
@@ -35,40 +39,19 @@ on:
 jobs:
 
   build_firmware:
-    name: Build firmware (${{ inputs.target }} > ${{ inputs.subtarget }} > ${{ inputs.profile }})
+    name: Build firmware (${{ inputs.target }}, ${{ inputs.subtarget }}, ${{ inputs.profile }})
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Remove unnecessary apt packages
-        run: sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
-  
-      - name: Remove unnecessary apt-installed files
+      - name: Run apt tasks
         run: |
-          sudo rm -rf /etc/mono/certstore
-          sudo rm -rf /usr/lib/mono
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /etc/mono
-          sudo rm -rf /usr/libexec/docker
-          sudo rm -rf /etc/docker
+          sudo apt -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
+          sudo rm -rf /etc/docker /etc/mono /usr/lib/mono /usr/libexec/docker /usr/share/dotnet
+          sudo apt -y update
+          sudo apt -y full-upgrade --auto-remove --purge
+          sudo apt -y install --auto-remove --purge b43-fwcutter bash bcc bin86 binutils bzip2 flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev bison build-essential clang file g++-multilib python3-distutils rsync
+          sudo apt -y clean
   
-      - name: Update apt statuses
-        run: sudo apt -y update
-
-      - name: Upgrade apt packages
-        run: sudo apt -y full-upgrade --auto-remove --purge
-
-      - name: Install requirement apt packages
-        run: sudo apt -y install b43-fwcutter bash bcc bin86 binutils bzip2 flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev bison build-essential clang file g++-multilib python3-distutils rsync
-
-      - name: apt clean 1 of 3
-        run: sudo apt -y autoremove --purge
-
-      - name: apt clean 2 of 3
-        run: sudo apt -y autoclean
-
-      - name: apt clean 3 of 3
-        run: sudo apt -y clean
-
       - name: df check
         run: df -h
 
@@ -111,7 +94,7 @@ jobs:
             !openwrt/bin/targets/${{ inputs.target }}/${{ inputs.subtarget }}/packages
 
   release_firmware:
-    name: Release firmware (${{ inputs.target }} > ${{ inputs.subtarget }} > ${{ inputs.profile }})
+    name: Release firmware (${{ inputs.target }}, ${{ inputs.subtarget }}, ${{ inputs.profile }})
     if: ${{ inputs.dorelease == 1 }}
     needs: build_firmware
     uses: ./.github/workflows/release.target-profile.yml

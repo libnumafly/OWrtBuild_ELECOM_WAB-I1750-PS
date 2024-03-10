@@ -16,18 +16,6 @@ on:
         required: true
         type: string
 
-  workflow_dispatch:
-    inputs:
-      target:
-        required: true
-        type: string
-      subtarget:
-        required: true
-        type: string
-      profile:
-        required: true
-        type: string
-
 jobs:
 
   packing:

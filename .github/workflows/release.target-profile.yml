@@ -1,7 +1,7 @@
 name: Release OpenWrt device firmware
 
 permissions:
-  actions: write
+  contents: write
 
 on:
   workflow_call:

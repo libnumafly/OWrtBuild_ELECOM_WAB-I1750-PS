@@ -60,13 +60,21 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Import cached build base
+      - name: Import cached target build base
+        id: import-cached-base
         uses: actions/cache/restore@v4
         with:
           key: ${{ inputs.subtarget }}.${{ inputs.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}
           restore-keys: ${{ inputs.subtarget }}.${{ inputs.target }}.build-
           path: openwrt
 
+      - name: Build target build base, if cached build base not exist
+        if: ${{ steps.import-cached-base.cache-hit == 0 }}
+        uses: ./.github/workflows/build.target-base.yml
+        with:
+          target: ${{ inputs.target }}
+          subtarget: ${{ inputs.subtarget }}
+    
       - name: Import build configuration (target specification)
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config

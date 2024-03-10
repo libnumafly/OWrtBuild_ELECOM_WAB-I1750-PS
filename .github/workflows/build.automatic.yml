@@ -13,8 +13,8 @@ on:
 jobs:
 
   build_base:
-    name: Build target base
-    uses: ./.github/workflows/build.base.yml
+    name: Build target build base
+    uses: ./.github/workflows/build.target-base.yml
     with:
       target: ${{ matrix.target }}
       subtarget: ${{ matrix.subtarget }}

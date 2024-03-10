@@ -1,4 +1,4 @@
-name: Build OpenWrt target tools/toolchain
+name: Build OpenWrt target build base
 
 on:
   workflow_call:
@@ -22,7 +22,7 @@ on:
 jobs:
 
   build_base:
-    name: Build target tools/toolchain (${{ inputs.target }}, ${{ inputs.subtarget }})
+    name: Build target build base (${{ inputs.target }}, ${{ inputs.subtarget }})
     runs-on: ubuntu-22.04
 
     steps:
@@ -102,7 +102,7 @@ jobs:
         working-directory: openwrt
         run: make clean
 
-      - name: Create cached build base
+      - name: Create target build base cache
         uses: actions/cache/save@v4
         with:
           key: ${{ inputs.subtarget }}.${{ inputs.target }}.build-${{ github.run_id }}.${{ github.run_attempt }}

@@ -102,9 +102,9 @@ jobs:
         working-directory: openwrt
         run: make -j$(nproc) download
 
-      - name: Build tools, toolchain, target
+      - name: Build tools, toolchain
         working-directory: openwrt
-        run: make -j$(nproc) tools/compile toolchain/compile target/compile
+        run: make -j$(nproc) tools/compile toolchain/compile
 
       - name: Cleanup
         working-directory: openwrt

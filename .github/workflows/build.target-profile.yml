@@ -71,15 +71,11 @@ jobs:
 
       - name: Update feeds
         working-directory: openwrt
-        run: |
-          ./scripts/feeds update -a
-          ./scripts/feeds update -a
+        run: ./scripts/feeds update -a
 
       - name: Install feeds
         working-directory: openwrt
-        run: |
-          ./scripts/feeds install -a
-          ./scripts/feeds install -a
+        run: ./scripts/feeds install -a
 
       - name: Import build configuration (profile specification)
         working-directory: openwrt

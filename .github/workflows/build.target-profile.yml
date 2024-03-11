@@ -50,12 +50,12 @@ jobs:
     steps:
       - name: Run apt tasks
         run: |
-          sudo apt -q -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
+          sudo apt -qq -y remove --auto-remove --purge aspnet* docker* dotnet* firefox* google* mono* snapd*
           sudo rm -rf /etc/docker /etc/mono /usr/lib/mono /usr/libexec/docker /usr/share/dotnet
-          sudo apt -q -y update
-          sudo apt -q -y full-upgrade --auto-remove --purge
-          sudo apt -q -y install --auto-remove --purge b43-fwcutter bash bcc bin86 binutils bzip2 ccache flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev bison build-essential clang file g++-multilib python3-distutils rsync
-          sudo apt -q -y clean
+          sudo apt -qq -y update
+          sudo apt -qq -y full-upgrade --auto-remove --purge
+          sudo apt -qq -y install --auto-remove --purge b43-fwcutter bash bcc bin86 binutils bzip2 ccache flex g++ gawk gcc gcc-multilib gettext git gzip help2man intltool libboost-dev libelf-dev libncurses-dev libssl-dev libthread-queue-any-perl libusb-dev libxml-parser-perl make openjdk-8-jdk-headless patch perl-modules python3-dev sharutils time unzip util-linux wget xsltproc zip zlib1g-dev bison build-essential clang file g++-multilib python3-distutils rsync
+          sudo apt -qq -y clean
   
       - name: df check
         run: df -h

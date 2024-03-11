@@ -71,12 +71,7 @@ jobs:
         with:
           key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-${{ github.run_id }}.${{ github.run_attempt }}
           restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-
-          fail-on-cache-miss: true
           path: openwrt
-
-      - name: Exit when cache-miss
-        if: ${{ steps.import-cached-base.cache-hit == 'false' }}
-        run: false
 
       - name: Ccache cache
         uses: actions/cache@v4

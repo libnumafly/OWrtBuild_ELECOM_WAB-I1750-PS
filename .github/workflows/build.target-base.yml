@@ -107,6 +107,4 @@ jobs:
         uses: actions/cache/save@v4
         with:
           key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-${{ github.run_id }}.${{ github.run_attempt }}
-          path: |
-            openwrt
-            !openwrt/.ccache
+          path: openwrt

@@ -104,11 +104,11 @@ jobs:
 
       - name: Build tools
         working-directory: openwrt
-        run: make -j$(nproc) tools/compile
+        run: make -j$(nproc) tools/install
 
       - name: Build toolchain
         working-directory: openwrt
-        run: make -j$(nproc) toolchain/compile
+        run: make -j$(nproc) toolchain/install
 
       - name: Cleanup
         working-directory: openwrt

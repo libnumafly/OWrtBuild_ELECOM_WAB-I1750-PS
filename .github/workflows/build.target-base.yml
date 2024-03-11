@@ -104,13 +104,9 @@ jobs:
         working-directory: openwrt
         run: make -j$(nproc) download
 
-      - name: Build tools
+      - name: Build tools, toolchain, target
         working-directory: openwrt
-        run: make -j$(nproc) tools/compile
-
-      - name: Build toolchain
-        working-directory: openwrt
-        run: make -j$(nproc) toolchain/compile
+        run: make -j$(nproc) tools/compile toolchain/compile target/compile
 
       - name: Cleanup
         working-directory: openwrt

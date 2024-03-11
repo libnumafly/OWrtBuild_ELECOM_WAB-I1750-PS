@@ -97,6 +97,10 @@ jobs:
         working-directory: openwrt
         run: make defconfig
 
+      - name: Pre-download sources
+        working-directory: openwrt
+        run: make -j$(nproc) download
+
       - name: Build firmware
         working-directory: openwrt
         run: make -j$(nproc)

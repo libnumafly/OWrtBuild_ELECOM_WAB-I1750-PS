@@ -18,8 +18,8 @@ on:
 
 jobs:
 
-  packing:
-    name: Packing firmware to release (${{ inputs.target }}, ${{ inputs.subtarget }}, ${{ inputs.profile }})
+  release_firmware:
+    name: Release firmware (${{ inputs.target }}, ${{ inputs.subtarget }}, ${{ inputs.profile }})
     runs-on: ubuntu-22.04
 
     steps:

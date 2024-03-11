@@ -81,13 +81,9 @@ jobs:
           ./scripts/feeds install -a
           ./scripts/feeds install -a
 
-      - name: Import build configuration (target specification)
-        working-directory: openwrt
-        run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
-
       - name: Import build configuration (profile specification)
         working-directory: openwrt
-        run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}.config >> .config
+        run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}.config > .config
 
       - name: Apply build configuration
         working-directory: openwrt

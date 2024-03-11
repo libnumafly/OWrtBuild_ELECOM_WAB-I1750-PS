@@ -51,6 +51,13 @@ jobs:
       - name: Clone openwrt/openwrt repository
         run: git clone --depth=1 https://github.com/openwrt/openwrt.git
 
+      - name: Ccache cache
+        uses: actions/cache@v4
+        with:
+          key: ccache-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: ccache-
+          path: openwrt/.ccache
+
       - name: Clone openwrt/packages repository
         working-directory: openwrt
         run: git clone --depth=1 https://github.com/openwrt/packages.git feeds/packages
@@ -82,13 +89,6 @@ jobs:
         run: |
           ./scripts/feeds install -a
           ./scripts/feeds install -a
-
-      - name: Ccache cache
-        uses: actions/cache@v4
-        with:
-          key: ccache-${{ github.run_id }}.${{ github.run_attempt }}
-          restore-keys: ccache-
-          path: openwrt/.ccache
 
       - name: Import build configuration (target specification)
         working-directory: openwrt

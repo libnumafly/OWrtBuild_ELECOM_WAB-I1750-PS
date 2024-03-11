@@ -83,6 +83,18 @@ jobs:
           restore-keys: ccache-
           path: openwrt/.ccache
 
+      - name: Update feeds
+        working-directory: openwrt
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds update -a
+
+      - name: Install feeds
+        working-directory: openwrt
+        run: |
+          ./scripts/feeds install -a
+          ./scripts/feeds install -a
+
       - name: Import build configuration (target specification)
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config

@@ -72,16 +72,7 @@ jobs:
           key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-${{ github.run_id }}.${{ github.run_attempt }}
           restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildbase-
           fail-on-cache-miss: true
-          path: |
-            openwrt
-            !openwrt/.ccache
-
-      - name: Ccache cache
-        uses: actions/cache@v4
-        with:
-          key: ccache-${{ github.run_id }}.${{ github.run_attempt }}
-          restore-keys: ccache-
-          path: openwrt/.ccache
+          path: openwrt
 
       - name: Update feeds
         working-directory: openwrt

@@ -80,6 +80,9 @@ jobs:
       - name: Refresh timestamps
         working-directory: openwrt
         run: |
+          if [ -d .ccache/ ]; then
+            find -H .ccache/ -not -type l -print0 | xargs -0 touch
+          fi
           if [ -d build_dir/ ]; then
             find -H build_dir/ -not -type l -print0 | xargs -0 touch
           fi

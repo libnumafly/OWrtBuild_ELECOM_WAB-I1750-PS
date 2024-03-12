@@ -73,17 +73,8 @@ jobs:
           restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-
           path: |
             openwrt/.ccache
+            openwrt/build_dir
             openwrt/staging_dir
-
-      - name: Refresh timestamps
-        working-directory: openwrt
-        run: |
-          if [ -d .ccache/ ]; then
-            find -H .ccache/ -not -type l -print0 | xargs -0 touch
-          fi
-          if [ -d staging_dir/ ]; then
-            find -H staging_dir/ -not -type l -print0 | xargs -0 touch
-          fi
 
       - name: Apply customisation
         working-directory: openwrt
@@ -105,9 +96,18 @@ jobs:
         working-directory: openwrt
         run: make defconfig
 
-      - name: Pre-download sources
+      - name: Refresh timestamps
         working-directory: openwrt
-        run: make -j$(nproc) download
+        run: |
+          if [ -d .ccache/ ]; then
+            find -H .ccache/ -not -type l -print0 | xargs -0 touch
+          fi
+          if [ -d build_dir/ ]; then
+            find -H build_dir/ -not -type l -print0 | xargs -0 touch
+          fi
+          if [ -d staging_dir/ ]; then
+            find -H staging_dir/ -not -type l -print0 | xargs -0 touch
+          fi
 
       - name: Build tools, toolchain
         working-directory: openwrt

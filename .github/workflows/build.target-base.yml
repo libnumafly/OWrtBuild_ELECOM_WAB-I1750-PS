@@ -80,8 +80,12 @@ jobs:
       - name: Refresh timestamps
         working-directory: openwrt
         run: |
-          find -H build_dir/ -not -type l -print0 | xargs -0 touch
-          find -H staging_dir/ -not -type l -print0 | xargs -0 touch
+          if [ -d build_dir/ ]; then
+            find -H build_dir/ -not -type l -print0 | xargs -0 touch
+          fi
+          if [ -d staging_dir/ ]; then
+            find -H staging_dir/ -not -type l -print0 | xargs -0 touch
+          fi
 
       - name: Apply customisation
         working-directory: openwrt

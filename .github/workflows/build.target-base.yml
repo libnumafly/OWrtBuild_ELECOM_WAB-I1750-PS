@@ -67,6 +67,25 @@ jobs:
         working-directory: openwrt
         run: git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
+      - name: Import cache dir
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-
+          path: |
+            openwrt/.ccache
+            openwrt/staging_dir
+
+      - name: Refresh timestamps
+        working-directory: openwrt
+        run: |
+          if [ -d .ccache/ ]; then
+            find -H .ccache/ -not -type l -print0 | xargs -0 touch
+          fi
+          if [ -d staging_dir/ ]; then
+            find -H staging_dir/ -not -type l -print0 | xargs -0 touch
+          fi
+
       - name: Apply customisation
         working-directory: openwrt
         run: patch -Np1 < ../feeds.github.patch
@@ -90,29 +109,6 @@ jobs:
       - name: Pre-download sources
         working-directory: openwrt
         run: make -j$(nproc) download
-
-      - name: Re-use build dir
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.target }}.${{ inputs.subtarget }}.builddir-${{ github.run_id }}.${{ github.run_attempt }}
-          restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.builddir-
-          path: |
-            openwrt/.ccache
-            openwrt/build_dir
-            openwrt/staging_dir
-
-      - name: Refresh timestamps
-        working-directory: openwrt
-        run: |
-          if [ -d .ccache/ ]; then
-            find -H .ccache/ -not -type l -print0 | xargs -0 touch
-          fi
-          if [ -d build_dir/ ]; then
-            find -H build_dir/ -not -type l -print0 | xargs -0 touch
-          fi
-          if [ -d staging_dir/ ]; then
-            find -H staging_dir/ -not -type l -print0 | xargs -0 touch
-          fi
 
       - name: Build tools, toolchain, target
         working-directory: openwrt

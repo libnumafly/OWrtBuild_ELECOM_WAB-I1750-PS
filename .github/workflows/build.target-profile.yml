@@ -42,6 +42,11 @@ jobs:
     name: Build firmware (${{ inputs.target }}, ${{ inputs.subtarget }}, ${{ inputs.profile }})
     runs-on: ubuntu-22.04
 
+    env:
+      CCACHE_COMPILERTYPE: gcc
+      CCACHE_DEPEND: true
+      CCACHE_SLOPPINESS: file_macro,locale,time_macros
+
     steps:
       - name: Run apt tasks
         run: |

@@ -120,7 +120,7 @@ jobs:
 
       - name: Show ccache statistics
         working-directory: openwrt
-        run: CCACHE_DIR=(pwd)/.ccache ccache -s
+        run: CCACHE_DIR=$(pwd)/.ccache ccache -s
 
       - name: Create target build base cache
         uses: actions/cache/save@v4

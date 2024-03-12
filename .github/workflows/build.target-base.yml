@@ -67,6 +67,22 @@ jobs:
         working-directory: openwrt
         run: git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
+      - name: Apply customisation
+        working-directory: openwrt
+        run: patch -Np1 < ../feeds.github.patch
+
+      - name: Update feeds
+        working-directory: openwrt
+        run: ./scripts/feeds update -a
+
+      - name: Install feeds
+        working-directory: openwrt
+        run: ./scripts/feeds install -a
+
+      - name: Import build configuration (target specification)
+        working-directory: openwrt
+        run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
+
       - name: Re-use build dir
         uses: actions/cache@v4
         with:
@@ -89,22 +105,6 @@ jobs:
           if [ -d staging_dir/ ]; then
             find -H staging_dir/ -not -type l -print0 | xargs -0 touch
           fi
-
-      - name: Apply customisation
-        working-directory: openwrt
-        run: patch -Np1 < ../feeds.github.patch
-
-      - name: Update feeds
-        working-directory: openwrt
-        run: ./scripts/feeds update -a
-
-      - name: Install feeds
-        working-directory: openwrt
-        run: ./scripts/feeds install -a
-
-      - name: Import build configuration (target specification)
-        working-directory: openwrt
-        run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
 
       - name: Apply build configuration
         working-directory: openwrt

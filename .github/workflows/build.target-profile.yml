@@ -74,14 +74,6 @@ jobs:
           fail-on-cache-miss: true
           path: openwrt
 
-      - name: Update feeds
-        working-directory: openwrt
-        run: ./scripts/feeds update -a
-
-      - name: Install feeds
-        working-directory: openwrt
-        run: ./scripts/feeds install -a
-
       - name: Import build configuration (profile specification)
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.${{ inputs.profile }}.config > .config
@@ -89,10 +81,6 @@ jobs:
       - name: Apply build configuration
         working-directory: openwrt
         run: make defconfig
-
-      - name: Pre-download sources
-        working-directory: openwrt
-        run: make -j$(nproc) download
 
       - name: Build firmware
         working-directory: openwrt

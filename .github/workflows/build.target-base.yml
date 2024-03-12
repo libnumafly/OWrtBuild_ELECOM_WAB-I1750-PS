@@ -83,6 +83,14 @@ jobs:
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
 
+      - name: Apply build configuration
+        working-directory: openwrt
+        run: make defconfig
+
+      - name: Pre-download sources
+        working-directory: openwrt
+        run: make -j$(nproc) download
+
       - name: Re-use build dir
         uses: actions/cache@v4
         with:
@@ -106,17 +114,9 @@ jobs:
             find -H staging_dir/ -not -type l -print0 | xargs -0 touch
           fi
 
-      - name: Apply build configuration
-        working-directory: openwrt
-        run: make defconfig
-
-      - name: Pre-download sources
-        working-directory: openwrt
-        run: make -j$(nproc) download
-
       - name: Build tools, toolchain, target
         working-directory: openwrt
-        run: make -j$(nproc) tools/compile toolchain/compile target/compile V=sc
+        run: make -j$(nproc) tools/compile toolchain/compile target/compile
 
       - name: Cleanup
         working-directory: openwrt

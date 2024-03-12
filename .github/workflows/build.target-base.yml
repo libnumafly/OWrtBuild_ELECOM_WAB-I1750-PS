@@ -116,7 +116,7 @@ jobs:
 
       - name: Build tools, toolchain, target
         working-directory: openwrt
-        run: make -j$(nproc) tools/compile toolchain/compile target/compile
+        run: make -j$(nproc) tools/compile toolchain/compile target/compile V=sc
 
       - name: Cleanup
         working-directory: openwrt

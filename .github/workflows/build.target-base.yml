@@ -62,6 +62,22 @@ jobs:
         working-directory: openwrt
         run: git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
+      - name: Re-use build dir
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.target }}.${{ inputs.subtarget }}.builddir-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.builddir-
+          path: |
+            openwrt/.ccache
+            openwrt/build_dir
+            openwrt/staging_dir
+
+      - name: Refresh timestamps
+        working-directory: openwrt
+        run: |
+          find -H build_dir/ -not -type l -print0 | xargs -0 touch
+          find -H staging_dir/ -not -type l -print0 | xargs -0 touch
+
       - name: Apply customisation
         working-directory: openwrt
         run: patch -Np1 < ../feeds.github.patch
@@ -86,9 +102,9 @@ jobs:
         working-directory: openwrt
         run: make -j$(nproc) download
 
-      - name: Build tools, toolchain
+      - name: Build tools, toolchain, target
         working-directory: openwrt
-        run: make -j$(nproc) tools/compile toolchain/compile
+        run: make -j$(nproc) tools/compile toolchain/compile target/compile
 
       - name: Cleanup
         working-directory: openwrt

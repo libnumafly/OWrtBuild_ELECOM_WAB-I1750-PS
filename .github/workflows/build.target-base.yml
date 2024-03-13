@@ -66,6 +66,14 @@ jobs:
         working-directory: openwrt
         run: git clone --depth=1 https://github.com/openwrt/telephony.git feeds/telephony
 
+      - name: Ccache cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-${{ github.run_id }}.${{ github.run_attempt }}
+          restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-
+          path: |
+            openwrt/.ccache
+
       - name: Apply customisation
         working-directory: openwrt
         run: patch -Np1 < ../feeds.github.patch
@@ -81,14 +89,6 @@ jobs:
       - name: Import build configuration (target specification)
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
-
-      - name: Ccache cache
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-${{ github.run_id }}.${{ github.run_attempt }}
-          restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-
-          path: |
-            openwrt/.ccache
 
       - name: Apply build configuration
         working-directory: openwrt

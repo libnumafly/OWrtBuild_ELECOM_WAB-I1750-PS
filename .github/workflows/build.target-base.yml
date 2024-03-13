@@ -94,6 +94,10 @@ jobs:
           path: |
             openwrt/.ccache
 
+      - name: Download sources
+        working-directory: openwrt
+        run: make -j$(nproc) download
+
       - name: Build tools, toolchain
         working-directory: openwrt
         run: make -j$(nproc) tools/compile toolchain/compile

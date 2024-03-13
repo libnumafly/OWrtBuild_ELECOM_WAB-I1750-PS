@@ -82,10 +82,6 @@ jobs:
         working-directory: openwrt
         run: cat ../target_config/${{ inputs.target }}.${{ inputs.subtarget }}.config > .config
 
-      - name: Apply build configuration
-        working-directory: openwrt
-        run: make defconfig
-
       - name: Ccache cache
         uses: actions/cache@v4
         with:
@@ -93,6 +89,10 @@ jobs:
           restore-keys: ${{ inputs.target }}.${{ inputs.subtarget }}.buildcache-
           path: |
             openwrt/.ccache
+
+      - name: Apply build configuration
+        working-directory: openwrt
+        run: make defconfig
 
       - name: Download sources
         working-directory: openwrt
